@@ -30,10 +30,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 
     # users app
     'accounts',
     'reservations',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -110,6 +112,8 @@ LANGUAGES = [
     ('en', _('English')),
 ]
 
+AUTH_USER_MODEL = 'accounts.User'
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
@@ -119,3 +123,6 @@ if DEBUG:
     )
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+LOGIN_REDIRECT_URL = '/dashboard/inicio'
+LOGOUT_REDIRECT_URL = '/'

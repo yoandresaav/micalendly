@@ -1,0 +1,105 @@
+
+{% extends 'accounts/_account_base.html' %}
+{% load static %}
+
+{% block body-form %}
+      
+  <form class="form-signin" method="POST">
+    {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+
+    <div class="text-center mb-4">
+      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">Crear Cuenta</h1>
+      <p>Escoja el tipo de cuenta (Alumno o Profesor)</p>
+      <p><a href="{% url 'index' %}">Regresar al Inicio</a></p>
+    </div>
+
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">
+          {{ error }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+  {% if form.errors %}
+	<!-- Error messaging -->
+	<div class="alert alert-danger" role="alert">
+		<div class="inner">
+			<p>Lo sentimos pero tiene algunos errores</p>
+			{{ form.non_field_errors }}
+			<ul>
+				{% for field in form %}
+					{% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<!-- /Error messaging -->
+  {% endif %}
+
+    <div class="form-label-group">
+      <input type="email" 
+        class="form-control" 
+        placeholder="Email address" 
+        name="{{ form.email.name }}"
+        id="{{ form.email.id_for_label }}"
+        {% if form.name.value != None %}
+          value="{{ form.name.value|stringformat:'s' }}"
+        {% endif %}
+        maxlength="{{ form.email.field.max_length }}"
+        required autofocus>
+      <label for="inputEmail">Email address</label>
+    </div>
+
+    <div class="form-label-group">
+      <input 
+        type="password" 
+        class="form-control" 
+        placeholder="Password" 
+        name="{{ form.password1.name }}"
+        id="{{ form.password1.id_for_label }}"
+        {% if form.name.value != None %}
+          value="{{ form.password1.value|stringformat:'s' }}"
+        {% endif %}
+        maxlength="{{ form.password1.field.max_length }}"
+        required>
+      <label for="{{ form.password1.id_for_label }}">Password</label>
+    </div>
+
+    <div class="form-label-group">
+      <input 
+        type="password" 
+        class="form-control" 
+        placeholder="Password" 
+        name="{{ form.password2.name }}"
+        id="{{ form.password2.id_for_label }}"
+        {% if form.name.value != None %}
+          value="{{ form.password2.value|stringformat:'s' }}"
+        {% endif %}
+        maxlength="{{ form.password2.field.max_length }}"
+        required>
+      <label for="{{ form.password2.id_for_label }}">Password</label>
+    </div>
+
+    <div class="checkbox mb-3">
+        <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" id="id_is_estudiante" name="is_estudiante">Estudiante
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" id="id_is_profesor" name="is_profesor">Profesor
+            </label>
+          </div>
+      </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Crear Cuenta</button>
+    <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
+  </form>
+{% endblock %}
