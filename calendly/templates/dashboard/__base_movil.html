@@ -1,0 +1,52 @@
+{% load static %}
+<header class="header-mobile d-block d-lg-none">
+    <div class="header-mobile__bar">
+        <div class="container-fluid">
+            <div class="header-mobile-inner">
+                <a class="logo" href="
+                            {% if user.is_profesor %}
+                                {% url 'dashboard:profesor' %}
+                            {% else %}
+                                {% url 'dashboard:estudiante' %}
+                            {% endif %}
+                                    ">
+                    <img src="{% static 'calendar.png' %}" height="30px" width="30px" alt="Calendly" />
+                </a>
+                <button class="hamburger hamburger--slider" type="button">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar-mobile">
+        <div class="container-fluid">
+            <ul class="navbar-mobile__list list-unstyled">
+                {% if user.is_profesor %}
+                    <li>
+                        <a class="" href="{% url 'dashboard:profesor' %}">
+                            <i class="fas fa-tachometer-alt"></i>Tus Estudiantes</a>
+                    </li>
+                    <li>
+                        <a class="" href="{% url 'dashboard:profesor-disponible' %}">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>Crear Horario</a>
+                    </li>
+                    <li>
+                        <a class="" href="{% url 'dashboard:profesor-horarios' %}">
+                                <i class="fa fa-history" aria-hidden="true"></i>Ver mis Horarios</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a  href="{% url 'dashboard:estudiante' %}">
+                            <i class="fas fa-tachometer-alt"></i>Menu Horarios</a>
+                    </li>
+                    <li>
+                        <a  href="{% url 'dashboard:estudiante-horarios' %}">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>Mis Reservas</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
