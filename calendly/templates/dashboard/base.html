@@ -177,29 +177,30 @@
                 <nav class="navbar-sidebar">
                     {% if user.is_profesor %}
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
-                            <a class="js-arrow" href="#">
+                        <li class="active">
+                            <a class="" href="#">
                                 <i class="fas fa-tachometer-alt"></i>Menu Horarios</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="{% url 'dashboard:profesor-disponible' %}">Crear Horario</a>
-                                </li>
-                                <li>
-                                    <a href="{% url 'dashboard:profesor-horarios' %}">Ver mis Horarios</a>
-                                </li>
-                            </ul>
+                        </li>
+                        <hr>
+                        <li class="">
+                            <a class="" href="{% url 'dashboard:profesor-disponible' %}">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>Crear Horario</a>
+                        </li>
+                        <li class="">
+                            <a class="" href="{% url 'dashboard:profesor-horarios' %}">
+                                    <i class="fa fa-history" aria-hidden="true"></i>Ver mis Horarios</a>
                         </li>
                     </ul>
                     {% else %}
                     <ul class="list-unstyled navbar__list">
                             <li class="active has-sub">
-                                <a class="js-arrow" href="#">
+                                <a class="" href="#">
                                     <i class="fas fa-tachometer-alt"></i>Menu Horarios</a>
-                                <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                    <li>
-                                        <a href="{% url 'dashboard:estudiante-horarios' %}">Mis Horarios</a>
-                                    </li>
-                                </ul>
+                            </li>
+                            <hr>
+                            <li class="has-sub">
+                                <a class="js-arrow" href="{% url 'dashboard:estudiante-horarios' %}">
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>Mis Reservas</a>
                             </li>
                         </ul>
                     {% endif %}
