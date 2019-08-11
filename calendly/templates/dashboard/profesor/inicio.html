@@ -11,11 +11,10 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>order ID</th>
-                        <th>name</th>
-                        <th class="text-right">price</th>
-                        <th class="text-right">quantity</th>
-                        <th class="text-right">total</th>
+                        <th>Correo</th>
+                        <th>Fecha</th>
+                        <th class="text-right">Inicio</th>
+                        <th class="text-right">Tiempo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,10 +22,9 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ horario.estudiante }}</td>
-                            <td>{{ horario.estudiantes_permitidos }}</td>
-                            <td class="text-right">{{ horario.fecha|date:"D d M Y" }}</td>
-                            <td class="text-right">{{ horario.hora_inicio|time:"H:i" }}</td>
-                            <td class="text-right">{{ horario.tiempo_minutos }} MIN</td>
+                            <td>{{ horario.disponibilidad.fecha|date:"D d M Y" }}</td>
+                            <td class="text-right">{{ horario.disponibilidad.hora_inicio|time:"H:i" }}</td>
+                            <td class="text-right">{{ horario.disponibilidad.tiempo_minutos }} MIN</td>
                         </tr>
                     {% endfor %}
                 </tbody>
