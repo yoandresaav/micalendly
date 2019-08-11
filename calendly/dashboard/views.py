@@ -24,7 +24,7 @@ class ProfesorIndex(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return ReservaEstudiante.objects.filter(
             disponibilidad__profesor=self.request.user
-        )
+        ).distinct()
 
 class ProfesorDisponibleView(LoginRequiredMixin, FormView):
     template_name = 'dashboard/profesor/disponible.html'
@@ -74,7 +74,10 @@ class EstudianteIndex(LoginRequiredMixin, ListView):
     template_name = 'dashboard/estudiante/inicio.html'
 
     def get_queryset(self):
-        return DisponibilidadHoraria.objects.all()
+        user = self.request.user
+        return DisponibilidadHoraria.objects.exclude(
+            reservaestudiante__estudiante=user
+        )
 
 @login_required
 def estudiante_reservar(request, pk):
