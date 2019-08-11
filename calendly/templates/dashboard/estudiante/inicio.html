@@ -1,35 +1,52 @@
 {% extends 'dashboard/base.html' %}
 
-{% block headermovil %}
-{% endblock %}
-
-{% block menucontent %}
-<div class="menu-sidebar__content js-scrollbar1">
-        <nav class="navbar-sidebar">
-            <ul class="list-unstyled navbar__list">
-                <li class="active has-sub">
-                    <a class="js-arrow" href="#">
-                        <i class="fas fa-tachometer-alt"></i>Dashboard</a>
-                    <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="index.html">Horario Disponible</a>
-                        </li>
-                        <li>
-                            <a href="index2.html">Dashboard 2</a>
-                        </li>
-                        <li>
-                            <a href="index3.html">Dashboard 3</a>
-                        </li>
-                        <li>
-                            <a href="index4.html">Dashboard 4</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
-{% endblock %}
 
 {% block container %}
-
-{% endblock %}
+<div class="row">
+    <div class="col-md-12">
+        {% if object_list|length > 0%}
+        <h2 class="title-1 m-b-25">Listado de Horarios Disponibles</h2>
+        <div class="table-responsive table--no-card m-b-40">
+            <table class="table table-borderless table-striped table-earning">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Profesor</th>
+                        <th>Fecha</th>
+                        <th class="text-right">Hora</th>
+                        <th class="text-right">Tiempo</th>
+                        <th class="text-right">Capacidades</th>
+                        <th class="text-right">Reservar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for horario in object_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ horario.profesor }}</td>
+                            <td>{{ horario.fecha|date:"D d M Y" }}</td>
+                            <td class="text-right">{{ horario.hora_inicio|time:"H:i" }}</td>
+                            <td class="text-right">{{ horario.tiempo_minutos }} MIN</td>
+                            <td class="text-center">{{ horario.estudiantes_permitidos }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'dashboard:estudiante-reservar' horario.pk %}" class="btn btn-success">
+                                    Reservar
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <div class="card border-primary mb-3" style="max-width: 20rem;">
+                <div class="card-header">Sin Horarios</div>
+                <div class="card-body">
+                  <h4 class="card-title">No hay nuevos horarios</h4>
+                  <p class="card-text">No tenemos nuevos horarios disponibles.</p>
+                </div>
+              </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock%}

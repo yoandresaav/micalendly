@@ -1,14 +1,47 @@
 {% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block container %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="overview-wrap">
-                <h2 class="title-1">Eventos</h2>
-                <button class="au-btn au-btn-icon au-btn--blue">
-                    <i class="zmdi zmdi-plus"></i>Nuevo Tipo Evento</button>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title" v-if="headerText">Horario Disponible</strong>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12">
+                    <div class="overview-wrap">
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                        <input type="submit" class="btn btn-warning btn-block" value="Enviar" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                Hoy es {% now "Y-m-d" %}
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
 
+{% block script %}
+<script>
+    $(function() {
+        $( "#id_fecha" ).datepicker({ dateFormat: 'dd/mm/yy' });
+        $( "#id_hora_inicio" ).timepicker({
+            timeFormat: 'hh:mm',
+            interval: 60,
+            minTime: '10',
+            maxTime: '18:00',
+            defaultTime: '11',
+            startTime: '10:00',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true
+        })
+    });
+</script>
 {% endblock %}

@@ -13,8 +13,8 @@ class CustomUserManager(BaseUserManager):
             email=self.normalize_email(email),
         )
 
-        user.set_password(password) 
-        user.save(using=self._db)
+        user.set_password(password)
+        user.save()
         return user
 
     def create_superuser(self, email, password, **extra_fields):
@@ -27,7 +27,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        return self.create_user(email, password, **extra_fields)
 
 class User(AbstractUser):
     username = None

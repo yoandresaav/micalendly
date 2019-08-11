@@ -7,6 +7,7 @@ from django.contrib.auth.forms import (
     AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm, UserCreationForm
 )
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 
 
@@ -36,14 +37,12 @@ class UserCreationWithEmailForm(UserCreationForm):
     def clean(self):
         is_estudiante = self.cleaned_data["is_estudiante"]
         is_profesor = self.cleaned_data["is_profesor"]
-        print('is_estudiante %s  y is_profesor %s' % (is_estudiante, is_profesor))
         if not is_estudiante and not is_profesor:
             raise forms.ValidationError('Debe escoger Estudiante o Profesor')
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
-        user.set_password(user.password)
         user.is_estudiante = bool(self.cleaned_data["is_estudiante"])
         user.is_profesor = bool(self.cleaned_data["is_profesor"])
         user.is_active = True

@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect, JsonResponse
 from .forms import UserCreationWithEmailForm
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.views import LoginView
-# Create your views here.
 
 
 class SignUpView(CreateView):
@@ -21,9 +20,12 @@ class SignUpView(CreateView):
             if user is not None:
                 messages.success(request, 'Ahora puedes entrar con tu usuario y contraseña')
                 return HttpResponseRedirect('/')
+            else:
+                messages.warning(request, 'Lo sentimos hay un error al crear tu cuenta')
         return render(request, self.template_name, {'form': form})
 
     def get_success_url(self):
         return reverse('dasboard:inicio')
-class LoginView(LoginView):
+    
+class LoginAccountView(LoginView):
     template_name = 'accounts/login.html'

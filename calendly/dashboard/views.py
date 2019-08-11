@@ -1,7 +1,11 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
+from django.views.generic.edit import FormView
+from django.contrib import messages
 
+from .forms import DisponibilidadHorariaForm
+from .models import DisponibilidadHoraria, ReservaEstudiante
 
 
 def dashboard_init(request):
@@ -12,11 +16,73 @@ def dashboard_init(request):
         return redirect(reverse_lazy('dashboard:estudiante'), permanent=True)
 
 
-class ProfesorIndex(TemplateView):
+class ProfesorIndex(ListView):
     template_name = 'dashboard/profesor/inicio.html'
+    def get_queryset(self):
+        return ReservaEstudiante.objects.filter(
+            disponibilidad__profesor=self.request.user
+        )
 
-class ProfesorDisponibleView(TemplateView):
+class ProfesorDisponibleView(FormView):
     template_name = 'dashboard/profesor/disponible.html'
+    form_class = DisponibilidadHorariaForm
+    success_url = '/dashboard/profesor/'
+    def form_valid(self, form):
+        form.instance.profesor = self.request.user
+        form.save()
+        messages.success(self.request, 'Guardado tu horario con éxito.')
+        return super().form_valid(form)
 
-class EstudianteIndex(TemplateView):
+class ProfesorHorariosView(ListView):
+    template_name = 'dashboard/profesor/horarios.html'
+
+    def get_queryset(self):
+        return DisponibilidadHoraria.objects.filter(
+            profesor=self.request.user
+        ).order_by('-fecha')
+
+def profesor_eliminar_horario(request, pk):
+    disponibilidad = DisponibilidadHoraria.objects.filter(pk=pk, profesor=request.user)
+    if not disponibilidad:
+        messages.warning(request, 'Esa disponibilidad de horario no existe')
+    else:
+        disponibilidad.delete()
+        messages.success(request, 'Eliminada la disponibilidad')
+    return redirect(reverse_lazy('dashboard:profesor'))
+
+class EstudianteIndex(ListView):
     template_name = 'dashboard/estudiante/inicio.html'
+
+    def get_queryset(self):
+        return DisponibilidadHoraria.objects.all()
+
+def estudiante_reservar(request, pk):
+    disponibilidad = DisponibilidadHoraria.objects.filter(pk=pk).first()
+    if disponibilidad:
+        ReservaEstudiante.objects.create(
+            estudiante=request.user,
+            disponibilidad=disponibilidad,
+            comentario='Reserva automatizada'
+        )
+        messages.success(request, 'Se ha reservado el horario')
+    else:
+        messages.warning(request, 'Lo sentimos no se ha reservado')
+    return redirect(reverse_lazy('dashboard:estudiante'))
+
+class EstudianteHorarioView(ListView):
+    template_name = 'dashboard/estudiante/horarios.html'
+    def get_queryset(self):
+        return ReservaEstudiante.objects.filter(
+            estudiante=self.request.user
+        ).order_by('-created')
+
+def estudiante_eliminar_horario(request, pk):
+    reserva = ReservaEstudiante.objects.filter(
+        pk=pk, estudiante=request.user
+    )
+    if not reserva:
+        messages.warning(request, 'Esta reserva de horario no existe')
+    else:
+        reserva.delete()
+        messages.success(request, 'Eliminada la reserva de horario')
+    return redirect(reverse_lazy('dashboard:estudiante'))

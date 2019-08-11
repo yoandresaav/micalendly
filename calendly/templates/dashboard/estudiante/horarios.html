@@ -1,0 +1,58 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title" v-if="headerText">Mis Horarios</strong>
+            </div>
+            <div class="card-body">
+                <div class="col-md-12">
+                    {% if object_list %}
+                        <h2 class="title-1 m-b-25">Lista de Horarios</h2>
+                        <div class="table-responsive table--no-card m-b-40">
+                            <table class="table table-borderless table-striped table-earning">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Título</th>
+                                        <th class="text-right">Fecha</th>
+                                        <th class="text-right">Hora</th>
+                                        <th class="text-right">Tiempo</th>
+                                        <th class="text-right">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for horario in object_list %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ horario.disponibilidad.titulo }}</td>
+                                        <td class="text-right">{{ horario.disponibilidad.fecha|date:"D d M Y" }}</td>
+                                        <td class="text-right">{{ horario.disponibilidad.hora_inicio|time:"H:i" }}</td>
+                                        <td class="text-right">{{ horario.disponibilidad.tiempo_minutos }} MIN</td>
+                                        <td class="text-right">
+                                            <a href="{% url 'dashboard:estudiante-eliminar-horarios' horario.pk %}" class="btn btn-danger">
+                                                Quitar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        No tienes horarios reservados
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                Hoy es {% now "Y-m-d" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

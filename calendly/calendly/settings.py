@@ -31,12 +31,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'crispy_forms',
 
     # users app
     'accounts',
     'reservations',
     'dashboard',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,3 +129,4 @@ else:
 
 LOGIN_REDIRECT_URL = '/dashboard/inicio'
 LOGOUT_REDIRECT_URL = '/'
+

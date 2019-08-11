@@ -61,20 +61,23 @@
       </div>
     
     <div class="container">
+        {% if messages %}
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+              </div>
+        {% endif %}
+
         <div class="jumbotron">
             <h1 class="display-3">Hello, world!</h1>
             <p class="lead">Calendly helps you schedule meetings without the back-and-forth emails.</p>
             <hr class="my-4">
-            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+            <p></p>
             <p class="lead">
               <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
             </p>
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-              </div>
-            </div>
           </div>
     </div>
 
