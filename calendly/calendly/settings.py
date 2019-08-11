@@ -37,7 +37,6 @@ INSTALLED_APPS = [
 
     # users app
     'accounts',
-    'reservations',
     'dashboard',
 ]
 
