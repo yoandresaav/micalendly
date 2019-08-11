@@ -18,7 +18,9 @@ SECRET_KEY = 'ebdb#-%+fi^n&358i63#7%g%07^hx64k^k8uwhmhef@_wb_5xi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'mycalendly.pythonanywhere.com', 'localhost'
+]
 
 
 # Application definition
