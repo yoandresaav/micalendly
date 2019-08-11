@@ -1,5 +1,6 @@
 Django==1.11
 django-crispy-forms==1.7.2
 django-extensions==2.2.1
+nptime==1.1
 pytz==2019.2
 six==1.12.0

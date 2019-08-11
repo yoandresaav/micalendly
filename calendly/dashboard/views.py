@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView
@@ -29,6 +30,22 @@ class ProfesorDisponibleView(LoginRequiredMixin, FormView):
     template_name = 'dashboard/profesor/disponible.html'
     form_class = DisponibilidadHorariaForm
     success_url = '/dashboard/profesor/'
+
+    def post(self, request, *argd, **kwargs):
+        form = self.get_form()
+        profesor = self.request.user
+
+        try:
+            DisponibilidadHoraria.objects.is_posible_create(profesor, form)
+        except forms.ValidationError as error:
+            form.add_error('hora_inicio', error)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
     def form_valid(self, form):
         form.instance.profesor = self.request.user
         form.save()
