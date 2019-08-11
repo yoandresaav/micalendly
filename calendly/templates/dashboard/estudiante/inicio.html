@@ -10,27 +10,29 @@
             <table class="table table-borderless table-striped table-earning">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Profesor</th>
-                        <th>Fecha</th>
-                        <th class="text-right">Hora</th>
-                        <th class="text-right">Tiempo</th>
-                        <th class="text-right">Capacidades</th>
-                        <th class="text-right">Reservar</th>
+                        <th style="width: 10%">No</th>
+                        <th class="text-center">Profesor<br>Fecha</th>
+                        <th class="text-right">Hora<br>Tiempo</th>
+                        <th class="text-center">Capacidades<br>Reservar</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for horario in object_list %}
                         <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ horario.profesor }}</td>
-                            <td>{{ horario.fecha|date:"D d M Y" }}</td>
-                            <td class="text-right">{{ horario.hora_inicio|time:"H:i" }}</td>
-                            <td class="text-right">{{ horario.tiempo_minutos }} MIN</td>
-                            <td class="text-center">{{ horario.estudiantes_permitidos }}</td>
+                            <td style="width: 10%">{{ forloop.counter }}</td>
+                            <td>
+                                {{ horario.profesor }}
+                                <br>
+                                <span style="color: brown;">{{ horario.fecha|date:"D d M Y" }}</span>
+                            </td>
+                            <td class="text-right">
+                                    hora: {{ horario.hora_inicio|time:"H:i" }}
+                                <br>
+                                <span style="color: coral;">{{ horario.tiempo_minutos }} MIN</span>
+                            </td>
                             <td class="text-center">
                                 <a href="{% url 'dashboard:estudiante-reservar' horario.pk %}" class="btn btn-success">
-                                    Reservar
+                                    Reservar <span class="badge badge-light">{{ horario.estudiantes_permitidos }}</span>
                                 </a>
                             </td>
                         </tr>
