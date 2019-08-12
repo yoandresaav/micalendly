@@ -11,24 +11,28 @@ User = get_user_model()
 
 class DisponibilidadManager(models.Manager):
     def is_posible_create(self, user, form):
-        fecha_str = form.data.get('fecha')
-        hora_str = form.data.get('hora_inicio')
+        fecha_str_ini = form.data.get('fecha')
+        hora_str_ini = form.data.get('hora_inicio')
 
-        fecha = datetime.strptime(fecha_str, "%d/%m/%Y").date()
+        fecha = datetime.strptime(fecha_str_ini, "%d/%m/%Y").date()
         tiempo = int(form.data.get('tiempo_minutos'))
-        hora_str, min_str = hora_str.split(':')
+        hora_str, min_str = hora_str_ini.split(':')
         hora_inicial = nptime(int(hora_str), int(min_str))
         hora_final = hora_inicial + timedelta(minutes=tiempo)
 
         qs = self.get_queryset().filter(
-            fecha=fecha, profesor=user,
-            hora_inicio__range=[hora_inicial, hora_final]
+            fecha=fecha, profesor=user
         )
 
-        if qs:
-            error = "Ya tienes el día %s y hora %s reservado." % (fecha_str, hora_str)
-            error_code = "invalid_date"
-            raise forms.ValidationError(error, code=error_code)
+        for event in qs:
+            hora_inicial_event = event.hora_inicio
+            hora_final_event = nptime.from_time(event.hora_inicio) + event.tiempo_minutos
+            bool_hora_inicio = ((hora_inicial < hora_inicial_event) or (hora_inicial > hora_final_event))
+            bool_hora_final = ((hora_final < hora_inicial_event) or (hora_final > hora_final_event))
+            if not ( bool_hora_inicio and bool_hora_final):
+                error = "Ya tienes el día %s y hora %s reservado." % (fecha_str_ini, hora_str_ini)
+                error_code = "invalid_date"
+                raise forms.ValidationError(error, code=error_code)
 
 
 class DisponibilidadHoraria(models.Model):
@@ -37,7 +41,7 @@ class DisponibilidadHoraria(models.Model):
     estudiantes_permitidos = models.PositiveIntegerField(default=1)
     fecha = models.DateField()
     hora_inicio = models.TimeField()
-    tiempo_minutos = models.PositiveIntegerField(default=30)
+    tiempo_minutos = models.DurationField(default=timedelta(minutes=30))
     comentario = models.TextField(blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)

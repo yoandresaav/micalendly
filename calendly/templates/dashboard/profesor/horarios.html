@@ -1,5 +1,6 @@
 {% extends 'dashboard/base.html' %}
 {% load crispy_forms_tags %}
+{% load duration %}
 
 {% block container %}
 <div class="row">
@@ -32,7 +33,7 @@
                                         <td>{{ horario.estudiantes_permitidos }}</td>
                                         <td class="text-right">{{ horario.fecha|date:"D d M Y" }}</td>
                                         <td class="text-right">{{ horario.hora_inicio|time:"H:i" }}</td>
-                                        <td class="text-right">{{ horario.tiempo_minutos }} MIN</td>
+                                        <td class="text-right">{{ horario.tiempo_minutos|duration }}</td>
                                         <td class="text-right">
                                             <a href="{% url 'dashboard:profesor-eliminar-horarios' horario.pk %}" class="btn btn-danger">
                                                 Eliminar

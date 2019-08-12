@@ -1,5 +1,5 @@
 {% extends 'dashboard/base.html' %}
-
+{% load duration %}
 
 {% block container %}
 <div class="row">
@@ -24,7 +24,7 @@
                             <td>{{ horario.estudiante }}</td>
                             <td>{{ horario.disponibilidad.fecha|date:"D d M Y" }}</td>
                             <td class="text-right">{{ horario.disponibilidad.hora_inicio|time:"H:i" }}</td>
-                            <td class="text-right">{{ horario.disponibilidad.tiempo_minutos }} MIN</td>
+                            <td class="text-right">{{ horario.disponibilidad.tiempo_minutos|duration }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
