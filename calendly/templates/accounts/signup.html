@@ -54,7 +54,7 @@
         {% endif %}
         maxlength="{{ form.email.field.max_length }}"
         required autofocus>
-      <label for="inputEmail">Email address</label>
+      <label for="{{ form.email.id_for_label }}">Email address</label>
     </div>
 
     <div class="form-label-group">
